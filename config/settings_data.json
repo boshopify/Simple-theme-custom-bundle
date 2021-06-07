@@ -77,19 +77,19 @@
           "1621483054825d7ce5-0": {
             "type": "collection",
             "settings": {
-              "collection": "bundle-app-demo-thimatic-bundle-products-and-discounts"
+              "collection": "snacks"
             }
           },
           "1621483054825d7ce5-1": {
             "type": "collection",
             "settings": {
-              "collection": ""
+              "collection": "all-meals"
             }
           },
           "1621483054825d7ce5-2": {
             "type": "collection",
             "settings": {
-              "collection": ""
+              "collection": "drinks"
             }
           }
         },
