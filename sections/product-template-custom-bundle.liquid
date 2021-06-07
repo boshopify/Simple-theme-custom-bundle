@@ -141,7 +141,11 @@
                       <select class="custom-select" id={{ collection.handle }} style="width:400px;">
                         <option value="" selected>Please select</option>
                         {% for product in collection.products %}
-                          <option value={{ product.selected_or_first_available_variant.id }}>{{ product.title }} - {{ product.price | money_with_currency }}</option>
+                          <option value={{ product.selected_or_first_available_variant.id }}
+                            data-bundle-item-title="{{ product.title }}"
+                            data-bundle-item-quantity="1"
+                            data-bundle-item-price="{{ product.selected_or_first_available_variant.price | money }}"
+                          >{{ product.title }} - {{ product.price | money_with_currency }}</option>
                         {% endfor %}
                       </select>
                     </div>

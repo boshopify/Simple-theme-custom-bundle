@@ -1,0 +1,13 @@
+{% comment %}
+  Check if any bundle exists and deduct the bundle items in cart
+{% endcomment %}
+{% assign bundleItemCount = 0 %}
+{% for item in cart.items %}
+    {% for property in item.properties %}
+        {% if property.first =="_custom-bundle-item" and property.last=="true" %}
+            {% assign bundleItemCount = bundleItemCount | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+{% comment %} Deduct the total bundle item count from cart count {% endcomment %}
+{{cart.item_count | minus: bundleItemCount }}

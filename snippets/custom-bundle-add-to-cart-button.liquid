@@ -56,6 +56,14 @@
                     "_custom-bundle-item": "true"
                 }
             });
+
+            // Also add the bundle item title, price, quantity into the master bundle line item's properties for display in Cart
+            let selectedOption = select.options[select.selectedIndex];
+            let bundleItemTitle = selectedOption.dataset.bundleItemTitle
+            let bundleItemPrice = selectedOption.dataset.bundleItemPrice
+            let bundleItemQuantity = selectedOption.dataset.bundleItemQuantity
+            data["items"][0]["properties"][bundleItemTitle] = `${bundleItemQuantity} x ${bundleItemPrice}`
+
         }
         
         console.log(JSON.stringify(data));

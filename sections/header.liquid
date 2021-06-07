@@ -91,7 +91,7 @@
         {% include 'icon-cart' %}
         <span class="small--hide">
           {{ 'layout.cart.title' | t }}
-          (<span id="CartCount">{{ cart.item_count }}</span>)
+          (<span id="CartCount">{% render 'cart-count' %} </span>)
         </span>
       </a>
     </div>
