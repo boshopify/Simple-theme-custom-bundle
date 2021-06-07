@@ -1,0 +1,28 @@
+<script>
+    Checkout.$(document).on(`page:load page:change`, () => {
+        // customize order summary table to hide bundle items
+        const orderSummaryTable = document.querySelector(".product-table");
+        const lineItemRows = orderSummaryTable.tBodies[0].rows;
+        // initialize an array of bundle item variant IDs
+        let bundleItemVariantIds = []
+        // Fetch Cart data to check if any bundle item exists
+        fetch('/cart.js')
+            .then(res => res.json())
+            .then( cart => {
+                cart.items.forEach(item => {
+                    if(item.properties['_custom-bundle-item']=='true'){
+                        bundleItemVariantIds.push(item.variant_id.toString())
+                    }
+                });
+            })
+            .then( () =>{
+                for(row of lineItemRows ){
+                    if( bundleItemVariantIds.includes(row.dataset.variantId)){
+                        row.setAttribute("hidden", "true");
+                    }
+                }
+            })
+            .catch( err => console.log )
+        
+    });
+</script>
