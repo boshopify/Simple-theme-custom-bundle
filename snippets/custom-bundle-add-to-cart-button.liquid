@@ -1,0 +1,86 @@
+<button type="submit" name="add" id="AddToCart" class="btn product-single__cart-submit btn--full">
+    <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+</button>
+
+<script>
+    const bundleForm = document.querySelector('.custom-bundle-form');
+    const btnSubmit = document.querySelector('#AddToCart');
+    btnSubmit.disabled=true;    // disable the add to cart button initially
+    const selects = bundleForm.getElementsByTagName("select");
+
+    /** 
+      * Loop through the selected options to make sure all are non-empty
+      */
+    for(let select of selects){
+        select.addEventListener('change', e => {
+            let allSelected = true;
+            // check whether all fields are selected by user with non-empty values
+            for(let select of selects){
+                // any select field that has value empty?
+                if(!select.value) 
+                    allSelected = false;
+            }
+            // enable or disable Add to Cart button depending on whether all fields are selected
+            btnSubmit.disabled = !allSelected;
+        });
+    }
+    
+    // Disable the add to cart button, until customer selects all bundle items
+    // btnSubmit.setAttribute('aria-disabled', true)
+    bundleForm.addEventListener('submit', (e)=> {
+        e.preventDefault();
+        // Identify the bundle ID to manage the bundle master and bundle items in Cart as line items
+        const bundleId = bundleForm.dataset.bundleId;
+        // Initiate AJAX API payload data for form submission, with bundle master ID
+        data = {
+            "items": [
+                {
+                    "id": bundleId,
+                    "quantity": 1,
+                    "properties": {
+                        "_custom-bundle-master-variant-id": bundleId,
+                        "_custom-bundle-master": "true"
+                    }
+                }
+            ]
+        }
+        // Append the bundle items as line items into AJAX API data too
+        for(let select of selects) {
+            let variantId = select.value;
+            let quantity = 1;
+            data["items"].push({
+                "id": variantId,
+                "quantity": quantity,
+                "properties": {
+                    "_custom-bundle-master-variant-id": bundleId,
+                    "_custom-bundle-item": "true"
+                }
+            });
+        }
+        
+        console.log(JSON.stringify(data));
+        // check MDN's reference on using fetch for POST: 
+        // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+        
+        fetch('/cart/add.js', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+        })
+        .then( res => {
+            // console.log(res);
+            // redirect customer to cart to view the bundle
+            window.location.href="/cart";
+        })
+        .catch(err => {
+            console.error(err);
+        });
+        
+
+    })
+
+</script>
