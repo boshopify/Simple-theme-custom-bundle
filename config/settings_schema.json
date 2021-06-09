@@ -2604,5 +2604,24 @@
         }
       }
     ]
+  },
+  {
+    "name": {
+      "en": "Bundle UX"
+    },
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_hide_bundle_items",
+        "label": "Hide Bundle items in Cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "checkout_hide_bundle_items",
+        "label": "Hide Bundle items in Checkout",
+        "default": true
+      }
+    ]
   }
 ]

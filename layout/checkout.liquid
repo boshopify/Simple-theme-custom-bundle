@@ -51,6 +51,8 @@
 
     {{ tracking_code }}
 
-    {% render "checkout-bundle-customization", checkout: checkout %}
+    {% if settings.checkout_hide_bundle_items %}
+      {% render "checkout-bundle-customization", checkout: checkout %}
+    {% endif %}
   </body>
 </html>

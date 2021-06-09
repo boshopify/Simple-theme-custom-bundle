@@ -16,19 +16,22 @@
           <tbody>
             {% for item in cart.items %}
 
-              {% comment %} Add custom code to hide bundle items in Cart {% endcomment %}
-              {% unless item.properties == empty %}
-                {% comment %} Initialize all false for the bundle indicator flags {% endcomment %}
-                {% assign isBundleItem = false %}
-                {% assign isBundleMaster = false %}
-                {% for property in item.properties %}
-                  {% if property.first == "_custom-bundle-item" and property.last == "true" %}
-                    {% assign isBundleItem = true %}
-                  {% elsif property.first == "_custom-bundle-master" and property.last == "true" %}
-                    {% assign isBundleMaster = true %}  
-                  {% endif %}
-                {% endfor %}
-              {% endunless %} 
+              {% comment %} Initialize all false for the bundle indicator flags {% endcomment %}
+              {% assign isBundleItem = false %}
+              {% assign isBundleMaster = false %}
+              {% comment %} Use theme settings to display/hide bundle items {% endcomment %}
+              {% if settings.cart_hide_bundle_items %}
+                {% comment %} Add custom code to hide bundle items in Cart {% endcomment %}
+                {% unless item.properties == empty %}
+                  {% for property in item.properties %}
+                    {% if property.first == "_custom-bundle-item" and property.last == "true" %}
+                      {% assign isBundleItem = true %}
+                    {% elsif property.first == "_custom-bundle-master" and property.last == "true" %}
+                      {% assign isBundleMaster = true %}  
+                    {% endif %}
+                  {% endfor %}
+                {% endunless %} 
+              {% endif %}
 
               {% comment %} Hide bundle items in Cart {% endcomment %}
               {% unless isBundleItem %}
