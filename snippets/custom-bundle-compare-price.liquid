@@ -1,0 +1,53 @@
+{% comment %} Display a dynamic compare at price based on bundle item selection {% endcomment %}
+<span id="PriceA11y" class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+<s class="product-single__price--compare" id="ComparePrice"></s>
+
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        let selections = document.querySelector('.custom-bundle-form').getElementsByTagName("select");
+        // Loop through the selected options to update the bundle price dynamically
+        for(let select of selections){
+            select.addEventListener('change', e => {
+                if(allSelected(selections))
+                    updatePrice(selections);
+                else
+                    resetPrice();
+            });
+        }
+    });
+
+    /** Update the price and compare price for the bundle displayed in PDP */
+    const updatePrice = ( selections ) => {
+        let price = 0
+        // Loop through the select list to fetch all item prices
+        for(let select of selections) {
+            // Also add the bundle item title, price, quantity into the master bundle line item's properties for display in Cart
+            let selectedOption = select.options[select.selectedIndex];
+            price += parseInt(selectedOption.dataset.bundleItemPrice);
+        }
+        // convert price into decimal format
+        price =(price / 100.00);
+        
+        // update the compare at price displayed in PDP
+        let comparePriceElem = document.getElementById("ComparePrice");
+        console.log(price);
+        comparePriceElem.textContent = `$${price}`;
+    }
+
+    /** Reset the bundle price */
+    const resetPrice = () => {
+        let comparePriceElem = document.getElementById("ComparePrice");
+        comparePriceElem.textContent = "";
+    }
+
+    /** a Boolean function returning true when all bundle item selections are made by customer */
+    const allSelected = (selections) => {
+        for(let select of selections){
+            // any select field that has value empty?
+            if(!select.value)
+                return false;
+        }
+        // all selections have been made.
+        return true;
+    }
+</script>

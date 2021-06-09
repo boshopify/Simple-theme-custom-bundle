@@ -88,22 +88,15 @@
 
           <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
 
-          <p class="product-single__prices">
-            {% if product.compare_at_price_max > product.price %}
-              <span id="ComparePriceA11y" class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
-            {% else %}
-              <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-            {% endif %}
+          <p class="product-single__prices">   
+            <span id="ComparePriceA11y" class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+            <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+  
             <span id="ProductPrice" class="product-single__price" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
               {{ current_variant.price | money }}
             </span>
 
-            {% if product.compare_at_price_max > product.price %}
-              <span id="PriceA11y" class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-              <s class="product-single__price--compare" id="ComparePrice">
-                {{ current_variant.compare_at_price | money }}
-              </s>
-            {% endif %}
+            {% include 'custom-bundle-compare-price' %}
 
             {% include 'product-unit-price', variant: current_variant, available: true %}
           </p>
@@ -144,7 +137,8 @@
                           <option value={{ product.selected_or_first_available_variant.id }}
                             data-bundle-item-title="{{ product.title }}"
                             data-bundle-item-quantity="1"
-                            data-bundle-item-price="{{ product.selected_or_first_available_variant.price | money }}"
+                            data-bundle-item-price-display="{{ product.selected_or_first_available_variant.price | money }}"
+                            data-bundle-item-price="{{ product.selected_or_first_available_variant.price }}"
                           >{{ product.title }} - {{ product.price | money_with_currency }}</option>
                         {% endfor %}
                       </select>
